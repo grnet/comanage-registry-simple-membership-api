@@ -1,0 +1,26 @@
+{
+  "name": "project-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint *.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bunyan": "^1.8.10",
+    "joi": "^10.5.0",
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0",
+    "pg": "^6.2.2",
+    "pg-hstore": "^2.3.2",
+    "restify": "^4.3.0",
+    "sequelize": "^3.30.4"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-google": "^0.7.1"
+  }
+}
