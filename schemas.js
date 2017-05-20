@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const settings = require('./settings');
 
 const PersonSchema = Joi.object().keys({
 	Type: Joi.string().valid('CO'),
@@ -7,7 +8,7 @@ const PersonSchema = Joi.object().keys({
 
 const VoMemberSchema = Joi.object().keys({
 	Version: Joi.string().valid('1.0'),
-	VoId: Joi.string().token().max(256).valid('vo.access.egi.eu').required(),
+	VoId: Joi.string().token().max(256).valid(settings.VO_ID).required(),
 	Person: PersonSchema,
 	Status: Joi.string().valid([
 			'Active',

@@ -1,10 +1,9 @@
 const responses = require('./responses');
 const errors = require('./errors');
 const logger = require('./logger');
+const settings = require('./settings');
 const models = require('./models');
 const schemas = require('./schemas');
-
-const VO_ID = 'vo.access.egi.eu';
 
 const handleError = function(err, next) {
 	logger.warn(err);
@@ -28,7 +27,7 @@ const add = function(req, res, next) {
 		epuids.push(m.Person.Id);
 		newMembers.push({
 			epuid: m.Person.Id,
-			vo_id: VO_ID,
+			vo_id: settings.VO_ID,
 			valid_from: m.ValidFrom,
 			valid_through: m.ValidThrough,
 			status: m.Status,

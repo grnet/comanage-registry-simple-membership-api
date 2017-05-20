@@ -1,11 +1,13 @@
 const Sequelize = require('sequelize');
+const settings = require('./settings');
 
 const sequelize = new Sequelize(
-		'registry',
-		'cmregistryadmin',
-		'8&rM*qK2Nm-NR2eS', {
-			host: '192.168.68.5',
-			dialect: 'postgres',
+		settings.DB.NAME,
+		settings.DB.USER,
+		settings.DB.PASS,
+		{
+			host: settings.DB.HOST,
+			dialect: settings.DB.TYPE,
 			define: {
 				timestamps: false,
 			},
