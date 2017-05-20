@@ -63,17 +63,6 @@ const view = function(req, res, next) {
 					`No member with epuid: ${req.params.epuid}`);
 		}
 
-		const validFrom = new Date(m.valid_from);
-		const validThrough = new Date(m.valid_through);
-		const now = Date.now();
-
-		if (now < validFrom) {
-			throw new errors.OtherError('Inactive membership.');
-		}
-		if (validThrough < now) {
-			throw new errors.OtherError('Expired membership.');
-		}
-
 		res.send(m);
 		return next();
 	}).catch((err) => handleError(err, next));
