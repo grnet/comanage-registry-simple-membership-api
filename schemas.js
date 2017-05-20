@@ -3,7 +3,7 @@ const settings = require('./settings');
 
 const PersonSchema = Joi.object().keys({
 	Type: Joi.string().valid('CO'),
-	Id: Joi.string().token().max(256).required(),
+	Id: Joi.string().max(256).required(),
 });
 
 const VoMemberSchema = Joi.object().keys({
