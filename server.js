@@ -19,4 +19,6 @@ server.get(`${settings.API_BASE}/VoMembers/:epuid`,
 		passport.authenticate('basic', {session: false}),
 		VoMembers.view);
 
-server.listen(settings.PORT);
+server.listen(settings.PORT, settings.HOST, () => {
+	logger.info('%s listening at %s', server.name, server.url);
+});
