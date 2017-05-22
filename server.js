@@ -1,6 +1,5 @@
 const restify = require('restify');
-const passport = require('passport');
-const basicAuth = require('./auth-basic');
+const auth = require('./auth');
 const settings = require('./settings');
 const logger = require('./logger');
 const VoMembers = require('./VoMembers');
@@ -13,10 +12,10 @@ const server = restify.createServer({
 server.use(restify.bodyParser());
 
 server.post(`${settings.API_BASE}/VoMembers`,
-		passport.authenticate('basic', {session: false}),
+		auth.basic,
 		VoMembers.add);
 server.get(`${settings.API_BASE}/VoMembers/:epuid`,
-		passport.authenticate('basic', {session: false}),
+		auth.basic,
 		VoMembers.view);
 
 server.listen(settings.PORT, settings.HOST, () => {
