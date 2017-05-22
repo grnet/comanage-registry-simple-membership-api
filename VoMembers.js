@@ -1,9 +1,9 @@
-const responses = require('./responses');
-const errors = require('./errors');
 const logger = require('./logger');
 const settings = require('./settings');
 const models = require('./models');
 const schemas = require('./schemas');
+const responses = require('./responses');
+const errors = require('./errors');
 
 const handleError = function(err, next) {
 	logger.warn(err);

@@ -14,7 +14,7 @@ const ErrorResponse = function(fields, members) {
 		Id: id,
 		InvalidFields: fields.reduce((f) => {
 			return {
-				[f.name]: f.reasons.map((r) => r)
+				[f.name]: f.reasons,
 			};
 		}),
 		Memberships: members.map((m) => {
