@@ -6,12 +6,11 @@ const responses = require('./responses');
 const errors = require('./errors');
 
 const handleError = function(err, next) {
-	logger.warn(err);
-
 	if ('object' !== typeof err) {
 		err = new errors.OtherError(err);
 	}
 
+	logger.warn(err);
 	return next(err);
 };
 
@@ -41,9 +40,7 @@ const add = function(req, res, next) {
 		}
 
 		logger.info({adding: newMembers});
-		return models.VoMembers.bulkCreate(newMembers);
-	}).then(() => {
-		return models.VoMembers.findAll({where: {epuid: epuids}});
+		return models.VoMembers.bulkCreate(newMembers, {returning: true});
 	}).then((newMembers) => {
 		logger.info({added: newMembers});
 
