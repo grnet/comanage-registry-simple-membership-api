@@ -17,6 +17,9 @@ server.post(`${settings.API_BASE}/VoMembers`,
 server.get(`${settings.API_BASE}/VoMembers/:epuid`,
 		auth.basic,
 		VoMembers.view);
+server.put(`${settings.API_BASE}/VoMembers`,
+		auth.basic,
+		VoMembers.edit);
 
 server.listen(settings.PORT, settings.HOST, () => {
 	logger.info('%s listening at %s', server.name, server.url);

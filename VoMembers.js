@@ -65,7 +65,44 @@ const view = function(req, res, next) {
 	}).catch((err) => handleError(err, next));
 };
 
+const edit = function(req, res, next) {
+	const validation = schemas.VoMembersRequestSchema.validate(req.params);
+	if (validation.error) {
+		return next(new errors.InvalidFieldsError(validation.error.message));
+	}
+
+	if (req.params.VoMembers.length !== 1) {
+		return next(new errors.InvalidFieldsError('Only 1 VoMember should be specified.'));
+	}
+
+	const member = req.params.VoMembers.map((m) => {
+		return {
+			epuid: m.Person.Id,
+			vo_id: settings.VO_ID,
+			valid_from: m.ValidFrom,
+			valid_through: m.ValidThrough,
+			status: m.Status,
+		};
+	})[0];
+
+	models.VoMembers.findOne({where: {epuid: member.epuid}}).then((m) => {
+		if (!m) {
+			logger.warn({memberNotFound: member});
+			throw new errors.InvalidFieldsError(member);
+		}
+
+		logger.info({processing: m});
+		return m.update(member, {returning: true});
+	}).then((m) => {
+		logger.info({processed: m});
+
+		res.send(m);
+		return next();
+	}).catch((err) => handleError(err, next));
+};
+
 module.exports = {
 	add,
 	view,
+	edit,
 };
