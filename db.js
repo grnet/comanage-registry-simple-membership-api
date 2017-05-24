@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const settings = require('./settings');
+const logger = require('./logger');
 
 const sequelize = new Sequelize(
 		settings.DB.NAME,
@@ -8,6 +9,7 @@ const sequelize = new Sequelize(
 		{
 			host: settings.DB.HOST,
 			dialect: settings.DB.TYPE,
+			logging: logger.info.bind(logger),
 			define: {
 				timestamps: false,
 			},
