@@ -17,7 +17,7 @@ const handleError = function(err, next) {
 const add = function(req, res, next) {
 	const validation = schemas.VoMembersRequestSchema.validate(req.params);
 	if (validation.error) {
-		return next(new errors.InvalidFieldsError(validation.error.message));
+		return next(new errors.InvalidFieldsError('invalid fields'));
 	}
 
 	let epuids = [];
