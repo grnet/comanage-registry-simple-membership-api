@@ -8,7 +8,7 @@ const PersonSchema = Joi.object().keys({
 
 const VoMemberSchema = Joi.object().keys({
 	Version: Joi.string().valid('1.0'),
-	VoId: Joi.string().token().max(256).valid(settings.VO_ID).required(),
+	VoId: Joi.string().token().max(256).valid(settings.VO_IDS).required(),
 	Person: PersonSchema,
 	Status: Joi.string().valid([
 			'Active',

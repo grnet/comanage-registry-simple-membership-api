@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "node_args": ["--debug=7000"],
   "scripts": {
     "lint": "eslint *.js",
     "test": "echo \"Error: no test specified\" && exit 1"

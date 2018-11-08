@@ -23,18 +23,25 @@ const add = function(req, res, next) {
 	let epuids = [];
 	let newMembers = [];
 	for (m of req.params.VoMembers) {
-		epuids.push(m.Person.Id);
-		newMembers.push({
-			epuid: m.Person.Id,
-			vo_id: settings.VO_ID,
-			valid_from: m.ValidFrom,
-			valid_through: m.ValidThrough,
-			status: m.Status,
-		});
+		const count = settings.VO_IDS.filter((vo_id) => { return vo_id === m.VoId }).length;
+		logger.warn({count: count});
+		if(count > 0 ) {
+			epuids.push(m.Person.Id);
+			newMembers.push({
+				epuid: m.Person.Id,
+				vo_id: m.VoId,
+				valid_from: m.ValidFrom,
+				valid_through: m.ValidThrough,
+				status: m.Status,
+			});
+		} else {
+			logger.warn({vo_id: m.VoId});
+			throw new errors.ForbiddenError('FORBIDDEN');
+		}
 	}
 
 	models.VoMembers.findAll({where: {epuid: epuids}}).then((members) => {
-		if (members.length) {
+		if (members.length && members[0].vo_id === m.VoId) {
 			logger.warn({alreadyMembers: members});
 			throw new errors.InvalidFieldsError(members);
 		}
@@ -54,7 +61,7 @@ const add = function(req, res, next) {
 };
 
 const view = function(req, res, next) {
-	models.VoMembers.findOne({where: {epuid: req.params.epuid}}).then((m) => {
+	models.VoMembers.findAll({where: {epuid: req.params.epuid}}).then((m) => {
 		if (!m) {
 			throw new errors.DoesNotExistError(
 					`No member with epuid: ${req.params.epuid}`);
@@ -78,7 +85,7 @@ const edit = function(req, res, next) {
 	const member = req.params.VoMembers.map((m) => {
 		return {
 			epuid: m.Person.Id,
-			vo_id: settings.VO_ID,
+			vo_id: m.VoId,
 			valid_from: m.ValidFrom,
 			valid_through: m.ValidThrough,
 			status: m.Status,

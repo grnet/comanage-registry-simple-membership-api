@@ -11,10 +11,20 @@ const BadRequestError = function(message) {
 	this.name = 'BadRequestError';
 };
 
+const ForbiddenError = function(message) {
+	restify.RestError.call(this, {
+		restCode: 'Forbidden',
+		statusCode: 403,
+		message: message,
+		constructorOpt: ForbiddenError,
+	});
+	this.name = 'DoesNotExistError';
+};
+
 const DoesNotExistError = function(message) {
 	restify.RestError.call(this, {
 		restCode: 'DoesNotExist',
-		statusCode: 403,
+		statusCode: 404,
 		message: message,
 		constructorOpt: DoesNotExistError,
 	});
@@ -42,12 +52,14 @@ const OtherError = function(message) {
 };
 
 util.inherits(BadRequestError, restify.RestError);
+util.inherits(ForbiddenError, restify.RestError);
 util.inherits(DoesNotExistError, restify.RestError);
 util.inherits(InvalidFieldsError, restify.RestError);
 util.inherits(OtherError, restify.RestError);
 
 module.exports = {
 	BadRequestError,
+	ForbiddenError,
 	DoesNotExistError,
 	InvalidFieldsError,
 	OtherError,
