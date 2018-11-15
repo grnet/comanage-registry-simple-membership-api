@@ -74,7 +74,8 @@ const add = function(req, res, next) {
 };
 
 const view = function(req, res, next) {
-	models.VoMembers.findAll({where: {epuid: req.params.epuid}}).then((m) => {
+	let confUser = settings.AUTH_USERS.find(user => user.username === req.user.username);
+	models.VoMembers.findAll({where: {epuid: req.params.epuid, vo_id: confUser.vo_ids}}).then((m) => {
 		if (!m) {
 			throw new errors.DoesNotExistError(
 					`No member with epuid: ${req.params.epuid}`);
