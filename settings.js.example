@@ -1,0 +1,26 @@
+module.exports = {
+	API_BASE: '/api/v1',
+	APP_NAME: 'vomembers-api',
+	HOST: 'host_ip',
+	PORT: 8080,
+	DB: {
+		NAME: 'db_name',
+		USER: 'db_user',
+		PASS: 'db_pass',
+		HOST: 'db_host',
+		TYPE: 'postgres',
+	},
+	AUTH_USERS: [
+		{
+			username: 'foo',
+			password: 'bar',
+			vo_ids: ['vo1.example.org']
+		},
+		{
+			username: 'foo2',
+			password: 'bar2',
+			vo_ids: ['vo1.example.org', 'vo2.example.org']
+		}
+	],
+	VO_IDS: ['vo1.example.org', 'vo2.example.org'],
+};
