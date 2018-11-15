@@ -20,20 +20,25 @@ const add = function(req, res, next) {
 		return next(new errors.InvalidFieldsError('invalid fields'));
 	}
 
+	let confUser = settings.AUTH_USERS.find(user => user.username === req.user.username);
 	let epuids = [];
 	let newMembers = [];
 	for (m of req.params.VoMembers) {
 		const count = settings.VO_IDS.filter((vo_id) => { return vo_id === m.VoId }).length;
-		logger.warn({count: count});
 		if(count > 0 ) {
-			epuids.push(m.Person.Id);
-			newMembers.push({
-				epuid: m.Person.Id,
-				vo_id: m.VoId,
-				valid_from: m.ValidFrom,
-				valid_through: m.ValidThrough,
-				status: m.Status,
-			});
+			if(confUser.vo_ids.indexOf(m.VoId) === -1) {
+				logger.warn({vo_id: m.VoId, username: req.user.username});
+				throw new errors.ForbiddenError('FORBIDDEN');
+			} else {
+				epuids.push(m.Person.Id);
+				newMembers.push({
+					epuid: m.Person.Id,
+					vo_id: m.VoId,
+					valid_from: m.ValidFrom,
+					valid_through: m.ValidThrough,
+					status: m.Status,
+				});
+			}
 		} else {
 			logger.warn({vo_id: m.VoId});
 			throw new errors.ForbiddenError('FORBIDDEN');
@@ -41,7 +46,15 @@ const add = function(req, res, next) {
 	}
 
 	models.VoMembers.findAll({where: {epuid: epuids}}).then((members) => {
-		if (members.length && members[0].vo_id === m.VoId) {
+		let found = false;
+		members.forEach(member => {
+			newMembers.forEach(newMember => {
+				if(newMember.epuid === member.epuid && newMember.vo_id === member.vo_id) {
+					found = true;
+				}
+			})
+		})
+		if (found) {
 			logger.warn({alreadyMembers: members});
 			throw new errors.InvalidFieldsError(members);
 		}
